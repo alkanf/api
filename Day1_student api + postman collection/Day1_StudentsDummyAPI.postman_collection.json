@@ -1,0 +1,136 @@
+{
+  "info": {
+    "_postman_id": "d55b60eb-5e5e-40c2-b9a1-7b8f2369b636",
+    "name": "Day1_StudentsDummyAPI",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "47269879",
+    "_collection_link": "https://go.postman.co/collection/47269879-d55b60eb-5e5e-40c2-b9a1-7b8f2369b636?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Get All Students",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/students",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "students"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Single Student",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/students/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "students",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create a Student",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"Quaresme\",\r\n    \"location\" : \"Brasil\",\r\n    \"phone\" : \"3512333\",\r\n    \"courses\" : [\r\n        \"C\",\r\n        \"C++\"\r\n    ]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/students",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "students"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update a Student",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"Quaresma\",\r\n    \"location\" : \"Brasil\",\r\n    \"phone\" : \"3512333\",\r\n    \"courses\" : [\r\n        \"C\",\r\n        \"C++\"\r\n    ]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/students/g_hqjfBtQic",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "students",
+            "g_hqjfBtQic"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete a Student",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"Quaresme\",\r\n    \"location\" : \"Brasil\",\r\n    \"phone\" : \"3512333\",\r\n    \"courses\" : [\r\n        \"C\",\r\n        \"C++\"\r\n    ]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/students/g_hqjfBtQic",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "students",
+            "g_hqjfBtQic"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
