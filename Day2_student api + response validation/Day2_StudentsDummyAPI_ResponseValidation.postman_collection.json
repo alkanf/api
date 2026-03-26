@@ -1,0 +1,178 @@
+{
+  "info": {
+    "_postman_id": "04d75cef-13d6-42d3-9984-f9460c44b252",
+    "name": "Day2_StudentsDummyAPI_ResponseValidation",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "47269879",
+    "_collection_link": "https://go.postman.co/collection/47269879-04d75cef-13d6-42d3-9984-f9460c44b252?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Get All Students",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/students",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "students"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Single Student",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", () => {\r",
+              "    pm.response.to.have.status(200); \r",
+              "    });\r",
+              "\r",
+              "pm.test(\"Status code name has string\", () => {\r",
+              "    pm.response.to.have.status(\"OK\"); \r",
+              "    });\r",
+              "pm.test(\"Successful GET request\", () => {\r",
+              "    pm.expect(pm.response.code).to.be.oneOf([201, 200]);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Content-type header is present\", ()=> {\r",
+              "    pm.response.to.have.header(\"Content-type\");\r",
+              "});\r",
+              "pm.test(\"Content-length header is present\", ()=> {\r",
+              "    pm.response.to.have.header(\"Content-Length\");\r",
+              "});\r",
+              "pm.test(\"Content-type is application/json\", ()=> {\r",
+              "    pm.expect(pm.response.headers.get(\"Content-type\")).to.eql(\"application/json\");  \r",
+              "});\r",
+              "pm.test(\"Response time is less than 200ms\", ()=> {\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+              "});\r",
+              "const response = pm.response();\r",
+              "pm.test(\"Test data type of the response\", () => {\r",
+              "pm.expect(response).to.be.an(\"object\");\r",
+              "pm.expect(response.id).to.be.an(\"number\");\r",
+              "pm.expect(response.name).to.be.a(\"string\");\r",
+              "pm.expect(response.courses).to.be.a(\"Array\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/students/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "students",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create a Student",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"Quaresme\",\r\n    \"location\" : \"Brasil\",\r\n    \"phone\" : \"3512333\",\r\n    \"courses\" : [\r\n        \"C\",\r\n        \"C++\"\r\n    ]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/students",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "students"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update a Student",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"Quaresma\",\r\n    \"location\" : \"Brasil\",\r\n    \"phone\" : \"3512333\",\r\n    \"courses\" : [\r\n        \"C\",\r\n        \"C++\"\r\n    ]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/students/g_hqjfBtQic",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "students",
+            "g_hqjfBtQic"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete a Student",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"Quaresme\",\r\n    \"location\" : \"Brasil\",\r\n    \"phone\" : \"3512333\",\r\n    \"courses\" : [\r\n        \"C\",\r\n        \"C++\"\r\n    ]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/students/g_hqjfBtQic",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "students",
+            "g_hqjfBtQic"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
