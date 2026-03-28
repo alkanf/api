@@ -1,0 +1,280 @@
+{
+  "info": {
+    "_postman_id": "479e22bd-8ecf-4674-bacd-12babe80ab7a",
+    "name": "Day3_ChainingRequests",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "47269879",
+    "_collection_link": "https://go.postman.co/collection/47269879-479e22bd-8ecf-4674-bacd-12babe80ab7a?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Add a Student",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "const randomCountry = pm.variables.replaceIn('{{$randomCountry}}');\r",
+              "const randomUsername = pm.variables.replaceIn('{{$randomFirstName}}');\r",
+              "const randomPhone = pm.variables.replaceIn('{{$randomPhoneNumber}}');\r",
+              "\r",
+              "pm.collectionVariables.set(\"country\", randomCountry);\r",
+              "pm.collectionVariables.set(\"username\", randomUsername);\r",
+              "pm.collectionVariables.set(\"phone\", randomPhone);\r",
+              "\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const response = pm.response.json();\r",
+              "pm.collectionVariables.set(\"id\", response.id);\r",
+              "\r",
+              "\r",
+              "\r",
+              "pm.test(\"Status code is 201\", ()=> {\r",
+              "    pm.response.to.have.status(201);\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"{{username}}\",\r\n  \"location\": \"{{country}}\",\r\n  \"phone\": \"{{phone}}\",\r\n  \"courses\": [\r\n    \"JavaScript\",\r\n    \"Postman\"\r\n  ]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseURL}}students",
+          "host": [
+            "{{baseURL}}students"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Student",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const response = pm.response.json();\r",
+              "\r",
+              "pm.test(\"Status code is 200\", ()=> {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response body should have correct data\", () => {\r",
+              "    pm.expect(response.id).to.eql(pm.collectionVariables.get(\"id\"));\r",
+              "    pm.expect(response.name).to.eql(pm.collectionVariables.get(\"username\"));\r",
+              "    pm.expect(response.location).to.eql(pm.collectionVariables.get(\"country\"));\r",
+              "    pm.expect(response.phone).to.eql(pm.collectionVariables.get(\"phone\"));\r",
+              "});\r",
+              "\r",
+              "    \r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseURL}}students/{{id}}",
+          "host": [
+            "{{baseURL}}students"
+          ],
+          "path": [
+            "{{id}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update a Student",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const response = pm.response.json();\r",
+              "\r",
+              "pm.test(\"Status code is 200\", ()=> {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response body should have correct data\", () => {\r",
+              "    pm.expect(response.id).to.eql(pm.collectionVariables.get(\"id\"));\r",
+              "    pm.expect(response.name).to.eql(pm.collectionVariables.get(\"username\"));\r",
+              "    pm.expect(response.location).to.eql(pm.collectionVariables.get(\"country\"));\r",
+              "    pm.expect(response.phone).to.eql(pm.collectionVariables.get(\"phone\"));\r",
+              "});\r",
+              "\r",
+              "    \r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"{{username}}\",\r\n  \"location\": \"{{country}}\",\r\n  \"phone\": \"{{phone}}\",\r\n  \"courses\": [\r\n    \"Java\",\r\n    \"Selenium\"\r\n  ]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseURL}}students/{{id}}",
+          "host": [
+            "{{baseURL}}students"
+          ],
+          "path": [
+            "{{id}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete a Student",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "\r",
+              "\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const response = pm.response.json();\r",
+              "pm.collectionVariables.set(\"id\", response.id);\r",
+              "\r",
+              "pm.test(\"Status code is 200\", ()=> {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response body should have correct data\", () => {\r",
+              "    pm.expect(response.id).to.eql(pm.collectionVariables.get(\"id\"));\r",
+              "    pm.expect(response.name).to.eql(pm.collectionVariables.get(\"username\"));\r",
+              "    pm.expect(response.location).to.eql(pm.collectionVariables.get(\"country\"));\r",
+              "    pm.expect(response.phone).to.eql(pm.collectionVariables.get(\"phone\"));\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseURL}}students/{{id}}",
+          "host": [
+            "{{baseURL}}students"
+          ],
+          "path": [
+            "{{id}}"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseURL",
+      "value": ""
+    },
+    {
+      "key": "email",
+      "value": ""
+    },
+    {
+      "key": "username",
+      "value": ""
+    },
+    {
+      "key": "password",
+      "value": ""
+    },
+    {
+      "key": "id",
+      "value": ""
+    },
+    {
+      "key": "country",
+      "value": ""
+    },
+    {
+      "key": "phone",
+      "value": ""
+    }
+  ]
+}
