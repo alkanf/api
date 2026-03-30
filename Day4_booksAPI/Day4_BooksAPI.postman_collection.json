@@ -1,0 +1,209 @@
+{
+  "info": {
+    "_postman_id": "4f202de7-472c-4457-be76-9733930c6470",
+    "name": "Day4_BooksAPI",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "47269879",
+    "_collection_link": "https://go.postman.co/collection/47269879-4f202de7-472c-4457-be76-9733930c6470?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Create a Token",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const response = pm.response.json();\r",
+              "pm.collectionVariables.set(\"token\", response.accessToken);"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "const randomName = pm.variables.replaceIn('{{$randomFirstName}}');\r",
+              "const randomEmail = randomName + '@example.com';\r",
+              "\r",
+              "pm.collectionVariables.set(\"name\", randomName);\r",
+              "pm.collectionVariables.set(\"email\", randomEmail);"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"clientName\": \"{{name}}\",\r\n    \"clientEmail\": \"{{email}}\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseURL}}api-clients/",
+          "host": [
+            "{{baseURL}}api-clients"
+          ],
+          "path": [
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get API Status",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseURL}}status",
+          "host": [
+            "{{baseURL}}status"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Books",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const response = pm.response.json();\r",
+              "const firstBookID = response[0].id; // Get the ID of the first book in the response\r",
+              "pm.collectionVariables.set(\"firstBookID\", firstBookID); // Store the ID in a collection variable for later use\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseURL}}books?type=non-fiction",
+          "host": [
+            "{{baseURL}}books"
+          ],
+          "query": [
+            {
+              "key": "type",
+              "value": "non-fiction",
+              "description": "optional(fiction/non-fiction)"
+            },
+            {
+              "key": "limit",
+              "value": "1",
+              "description": "optional(1-20)",
+              "type": "text",
+              "disabled": true
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Single Book",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.collectionVariables.unset(name)\r",
+              "pm.collectionVariables.unset(email)\r",
+              "pm.collectionVariables.unset(firstBookID)\r",
+              "pm.collectionVariables.unset(token)"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseURL}}books/:bookID",
+          "host": [
+            "{{baseURL}}books"
+          ],
+          "path": [
+            ":bookID"
+          ],
+          "variable": [
+            {
+              "key": "bookID",
+              "value": "{{firstBookID}}"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseURL",
+      "value": ""
+    },
+    {
+      "key": "name",
+      "value": ""
+    },
+    {
+      "key": "email",
+      "value": ""
+    },
+    {
+      "key": "firstBookID",
+      "value": ""
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ]
+}
