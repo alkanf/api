@@ -1,0 +1,51 @@
+TCID;Title;Description;HTTP Request;BaseURL;EndPoint;Authentication;Query Params;Headers;Request Body;Expected Response;Status Code;Validations
+TC001;Get Single Product by ID;Validate the retrieval of a single product by ID;GET;https://api.escuelajs.co/;/api/v1/products/{{id}};None;None;None;None;Should return a single product object by ID;200;"Successful response.
+JSON schema validation.
+Response is a non-empty object.
+Verify the returned product matches the provided product ID."
+TC002;Get All Products;Validate the retrieval of all products;GET;https://api.escuelajs.co/;/api/v1/products;None;None;None;None;Should return an array of products;200;"Successful response.
+JSON schema validation.
+Response is a non-empty array.
+Validate the length of the array is as expected."
+TC003;Get Single Product by Slug;Validate the retrieval of a single product by slug;GET;https://api.escuelajs.co/;/api/v1/products/slug/{{slug}};None;None;None;None;Should return a single product object by slug;200;"Successful response.
+JSON schema validation.
+Response is a non-empty object.
+Verify the returned product matches the provided product slug."
+TC004;"Get Filter by Title
+";Validate the retrieval of products filtered by title;GET;https://api.escuelajs.co/;/api/v1/products/?title=Generic;None;title=Generic;None;None;Should return an array of filtered products by title;200;"Successful response.
+JSON schema validation.
+Response is a non-empty array.
+Validate the filter by title."
+TC005;"Get Filter by Price
+";Validate the retrieval of products filtered by price;GET;https://api.escuelajs.co/;/api/v1/products/?price=100;None;price=100;None;None;Should return an array of filtered products by price;200;"Successful response.
+JSON schema validation.
+Response is a non-empty array.
+Validate the filter by price."
+TC006;Get Filter by Category ID;Validate the retrieval of products filtered by category ID;GET;https://api.escuelajs.co/;/api/v1/products/?categoryId=1;None;categoryId=1;None;None;Should return an array of products filtered by category ID;200;"Successful response.
+JSON schema validation.
+Response is a non-empty array.
+Validate the category ID is expected."
+TC007;Get Filter by Category Slug;Validate the retrieval of products filtered by category Slug;GET;https://api.escuelajs.co/;/api/v1/products/?categorySlug=clothes;None;categorySlug=clothes;None;None;Should return an array of products filtered by slug;200;"Successful response.
+JSON schema validation.
+Response is a non-empty array.
+Validate the categorySlug is expected."
+TC008;Add a Product;Validate the addition of a new product;POST;https://api.escuelajs.co/;/api/v1/products/;None;None;None;"{
+  ""title"": ""New Product"",
+  ""price"": 10,
+  ""description"": ""A description"",
+  ""categoryId"": 1,
+  ""images"": [""https://placehold.co/600x400""]
+}";Should return the created product object;201;"Successful response.
+JSON schema validation.
+Response is a non-empty object.
+Validate the returned product matches the input data."
+TC009;Update a Product;Validate updating an existing product;PUT;https://api.escuelajs.co/;/api/v1/products/{{id}};None;None;None;"{
+  ""title"": ""Change title"",
+  ""price"": 100
+}";Should return the updated product object;200;"Successful response.
+JSON schema validation.
+Response is a non-empty object.
+Validate the returned product matches the updated data."
+TC010;Delete a Product;Validate deleting an existing product by ID;DELETE;https://api.escuelajs.co/;/api/v1/products/{{id}};None;None;None;None;Should confirm deletion (true or empty response);200;"Successful response.
+JSON schema validation.
+Response is true OR response body is empty"
