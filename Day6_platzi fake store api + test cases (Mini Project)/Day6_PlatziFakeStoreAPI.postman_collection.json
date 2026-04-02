@@ -1,0 +1,474 @@
+{
+  "info": {
+    "_postman_id": "48ac50a2-428e-4fd2-8c82-7ddcabbf591c",
+    "name": "Day6_PlatziFakeStoreAPI",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "47269879",
+    "_collection_link": "https://go.postman.co/collection/47269879-48ac50a2-428e-4fd2-8c82-7ddcabbf591c?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "Get All Products",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const response = pm.response.json();\r",
+                  "const id = response[0].id;\r",
+                  "const slug = response[0].slug;\r",
+                  "const title = response[0].title;\r",
+                  "const price = response[0].price;\r",
+                  "const categoryID = response[0].category.id;\r",
+                  "const categorySlug = response[0].category.slug;\r",
+                  "pm.collectionVariables.set(\"id\", id);\r",
+                  "pm.collectionVariables.set(\"slug\", slug);\r",
+                  "pm.collectionVariables.set(\"title\", title);\r",
+                  "pm.collectionVariables.set(\"price\", price);\r",
+                  "pm.collectionVariables.set(\"categoryID\", categoryID);\r",
+                  "pm.collectionVariables.set(\"categorySlug\", categorySlug);\r",
+                  "\r",
+                  "pm.test(\"Status code is 200\",  ()=> {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "pm.test(\"Validate array is not empty and has items\", () => {\r",
+                  "    pm.expect(response).to.be.an('array').that.is.not.empty;\r",
+                  "});\r",
+                  "\r",
+                  "// JSON Schema Test\r",
+                  "const productSchema = {\r",
+                  "    \"type\": \"array\", // Ana yapı bir array (liste)\r",
+                  "    \"items\": {\r",
+                  "        \"type\": \"object\",\r",
+                  "        \"required\": [\"id\", \"title\", \"price\", \"description\", \"category\", \"images\"],\r",
+                  "        \"properties\": {\r",
+                  "            \"id\": { \"type\": \"number\" },\r",
+                  "            \"title\": { \"type\": \"string\" },\r",
+                  "            \"slug\": { \"type\": \"string\" },\r",
+                  "            \"price\": { \"type\": \"number\" },\r",
+                  "            \"description\": { \"type\": \"string\" },\r",
+                  "            \"category\": {\r",
+                  "                \"type\": \"object\",\r",
+                  "                \"required\": [\"id\", \"name\", \"slug\", \"image\"],\r",
+                  "                \"properties\": {\r",
+                  "                    \"id\": { \"type\": \"number\" },\r",
+                  "                    \"name\": { \"type\": \"string\" },\r",
+                  "                    \"slug\": { \"type\": \"string\" },\r",
+                  "                    \"image\": { \"type\": \"string\", \"format\": \"uri\" }\r",
+                  "                }\r",
+                  "            },\r",
+                  "            \"images\": {\r",
+                  "                \"type\": \"array\",\r",
+                  "                \"items\": { \"type\": \"string\", \"format\": \"uri\" }\r",
+                  "            },\r",
+                  "            \"creationAt\": { \"type\": \"string\" },\r",
+                  "            \"updatedAt\": { \"type\": \"string\" }\r",
+                  "        }\r",
+                  "    }\r",
+                  "};\r",
+                  "\r",
+                  "pm.test(\"Validate JSON Schema\", () => {\r",
+                  "    pm.response.to.have.jsonSchema(productSchema);\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}api/v1/products",
+              "host": [
+                "{{baseURL}}api"
+              ],
+              "path": [
+                "v1",
+                "products"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Single Product by ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const response = pm.response.json();\r",
+                  "const expectedId = pm.collectionVariables.get(\"id\");\r",
+                  "\r",
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "pm.test(\"Validate product id is correct\", () => {\r",
+                  "    // Because one is string\r",
+                  "    pm.expect(Number(response.id)).to.equal(Number(expectedId));\r",
+                  "});\r",
+                  "pm.test(\"Response is a non-empty object\", () => {\r",
+                  "    pm.expect(response).to.be.an('object').and.not.empty;\r",
+                  "});\r",
+                  "// 2. JSON Schema Testing\r",
+                  "const singleProductSchema = {\r",
+                  "    \"type\": \"object\",\r",
+                  "    \"required\": [\"id\", \"title\", \"price\", \"category\"],\r",
+                  "    \"properties\": {\r",
+                  "        \"id\": { \"type\": \"number\" },\r",
+                  "        \"title\": { \"type\": \"string\" },\r",
+                  "        \"price\": { \"type\": \"number\" },\r",
+                  "        \"category\": { \"type\": \"object\" },\r",
+                  "        \"images\": { \"type\": \"array\" }\r",
+                  "    }\r",
+                  "};\r",
+                  "pm.test(\"Validate JSON Schema\", () => {\r",
+                  "    pm.response.to.have.jsonSchema(singleProductSchema);\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}api/v1/products/{{id}}",
+              "host": [
+                "{{baseURL}}api"
+              ],
+              "path": [
+                "v1",
+                "products",
+                "{{id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Single Product by Slug",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const response = pm.response.json();\r",
+                  "const expectedSlug = pm.collectionVariables.get(\"slug\");\r",
+                  "pm.test(\"Status code is 200\",  () => {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "pm.test(\"Validate product slug is correct\", () => {\r",
+                  "    pm.expect(response.slug).to.equal(expectedSlug);\r",
+                  "});\r",
+                  "pm.test(\"Response is a non-empty object\", () => {\r",
+                  "    pm.expect(response).to.be.an('object').and.not.empty;\r",
+                  "});\r",
+                  "\r",
+                  "const productSchema = {\r",
+                  "    \"type\": \"object\",\r",
+                  "    \"required\": [\"id\", \"title\", \"price\", \"category\", \"images\"],\r",
+                  "    \"properties\": {\r",
+                  "        \"id\": { \"type\": \"number\" },\r",
+                  "        \"title\": { \"type\": \"string\" },\r",
+                  "        \"price\": { \"type\": \"number\" },\r",
+                  "        \"description\": { \"type\": \"string\" },\r",
+                  "        \"category\": {\r",
+                  "            \"type\": \"object\",\r",
+                  "            \"required\": [\"id\", \"name\"],\r",
+                  "            \"properties\": {\r",
+                  "                \"id\": { \"type\": \"number\" },\r",
+                  "                \"name\": { \"type\": \"string\" }\r",
+                  "            }\r",
+                  "        },\r",
+                  "        \"images\": { \"type\": \"array\" }\r",
+                  "    }\r",
+                  "};\r",
+                  "\r",
+                  "pm.test(\"Validate JSON Schema\", () => {\r",
+                  "    pm.response.to.have.jsonSchema(productSchema);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}api/v1/products/slug/{{slug}}",
+              "host": [
+                "{{baseURL}}api"
+              ],
+              "path": [
+                "v1",
+                "products",
+                "slug",
+                "{{slug}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Filter by Title",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}api/v1/products/?title=Classic",
+              "host": [
+                "{{baseURL}}api"
+              ],
+              "path": [
+                "v1",
+                "products",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "title",
+                  "value": "Classic"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Filter by Price",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}api/v1/products/?price=15",
+              "host": [
+                "{{baseURL}}api"
+              ],
+              "path": [
+                "v1",
+                "products",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "price",
+                  "value": "15"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Filter by Category ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}api/v1/products/?categoryId=1",
+              "host": [
+                "{{baseURL}}api"
+              ],
+              "path": [
+                "v1",
+                "products",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "categoryId",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Filter by Category Slug",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}api/v1/products/?categorySlug=clothes",
+              "host": [
+                "{{baseURL}}api"
+              ],
+              "path": [
+                "v1",
+                "products",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "categorySlug",
+                  "value": "clothes"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add Product",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"title\": \"k Product\",\r\n  \"price\": 10,\r\n  \"description\": \"A description\",\r\n  \"categoryId\": 1,\r\n  \"images\": [\"https://placehold.co/600x400\"]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}api/v1/products/",
+              "host": [
+                "{{baseURL}}api"
+              ],
+              "path": [
+                "v1",
+                "products",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Product",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"title\": \"Product\",\r\n  \"price\": 100\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}api/v1/products/{{createdProductID}}",
+              "host": [
+                "{{baseURL}}api"
+              ],
+              "path": [
+                "v1",
+                "products",
+                "{{createdProductID}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Product Copy",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}api/v1/products/{{createdProductID}}",
+              "host": [
+                "{{baseURL}}api"
+              ],
+              "path": [
+                "v1",
+                "products",
+                "{{createdProductID}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "id",
+      "value": ""
+    },
+    {
+      "key": "baseURL",
+      "value": ""
+    },
+    {
+      "key": "slug",
+      "value": ""
+    },
+    {
+      "key": "createdProductID",
+      "value": ""
+    },
+    {
+      "key": "title",
+      "value": ""
+    },
+    {
+      "key": "price",
+      "value": ""
+    },
+    {
+      "key": "categoryID",
+      "value": ""
+    },
+    {
+      "key": "categorySlug",
+      "value": ""
+    }
+  ]
+}

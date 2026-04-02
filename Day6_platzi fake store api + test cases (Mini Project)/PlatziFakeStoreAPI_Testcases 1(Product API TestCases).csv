@@ -1,23 +1,23 @@
 TCID;Title;Description;HTTP Request;BaseURL;EndPoint;Authentication;Query Params;Headers;Request Body;Expected Response;Status Code;Validations
-TC001;Get Single Product by ID;Validate the retrieval of a single product by ID;GET;https://api.escuelajs.co/;/api/v1/products/{{id}};None;None;None;None;Should return a single product object by ID;200;"Successful response.
-JSON schema validation.
-Response is a non-empty object.
-Verify the returned product matches the provided product ID."
-TC002;Get All Products;Validate the retrieval of all products;GET;https://api.escuelajs.co/;/api/v1/products;None;None;None;None;Should return an array of products;200;"Successful response.
+TC001;Get All Products;Validate the retrieval of all products;GET;https://api.escuelajs.co/;/api/v1/products;None;None;None;None;Should return an array of products;200;"Successful response.
 JSON schema validation.
 Response is a non-empty array.
 Validate the length of the array is as expected."
+TC002;Get Single Product by ID;Validate the retrieval of a single product by ID;GET;https://api.escuelajs.co/;/api/v1/products/{{id}};None;None;None;None;Should return a single product object by ID;200;"Successful response.
+JSON schema validation.
+Response is a non-empty object.
+Verify the returned product matches the provided product ID."
 TC003;Get Single Product by Slug;Validate the retrieval of a single product by slug;GET;https://api.escuelajs.co/;/api/v1/products/slug/{{slug}};None;None;None;None;Should return a single product object by slug;200;"Successful response.
 JSON schema validation.
 Response is a non-empty object.
 Verify the returned product matches the provided product slug."
 TC004;"Get Filter by Title
-";Validate the retrieval of products filtered by title;GET;https://api.escuelajs.co/;/api/v1/products/?title=Generic;None;title=Generic;None;None;Should return an array of filtered products by title;200;"Successful response.
+";Validate the retrieval of products filtered by title;GET;https://api.escuelajs.co/;/api/v1/products/?title=Classic;None;title=Classic;None;None;Should return an array of filtered products by title;200;"Successful response.
 JSON schema validation.
 Response is a non-empty array.
 Validate the filter by title."
 TC005;"Get Filter by Price
-";Validate the retrieval of products filtered by price;GET;https://api.escuelajs.co/;/api/v1/products/?price=100;None;price=100;None;None;Should return an array of filtered products by price;200;"Successful response.
+";Validate the retrieval of products filtered by price;GET;https://api.escuelajs.co/;/api/v1/products/?price=15;None;price=15;None;None;Should return an array of filtered products by price;200;"Successful response.
 JSON schema validation.
 Response is a non-empty array.
 Validate the filter by price."
