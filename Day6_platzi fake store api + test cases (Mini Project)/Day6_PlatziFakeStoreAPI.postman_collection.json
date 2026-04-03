@@ -237,11 +237,69 @@
         },
         {
           "name": "Get Filter by Title",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const response = pm.response.json();\r",
+                  "const expectedTitle = pm.collectionVariables.get(\"title\");\r",
+                  "\r",
+                  "pm.test(\"Status code is 200\",  () => {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "pm.test(\"Validate all products contain the expected title\", () => {\r",
+                  "    response.forEach((product) => {\r",
+                  "        // No need to iterate array as we have for each method\r",
+                  "        pm.expect(product.title).to.include(expectedTitle);\r",
+                  "    });\r",
+                  "});\r",
+                  "pm.test(\"Response is a non-empty array\", () => {\r",
+                  "    pm.expect(response).to.be.an('array').and.not.empty;\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "const arrayProductSchema = {\r",
+                  "    \"type\": \"array\",\r",
+                  "    \"items\": {\r",
+                  "        \"type\": \"object\",\r",
+                  "        \"required\": [\"id\", \"title\", \"price\", \"category\", \"images\"],\r",
+                  "        \"properties\": {\r",
+                  "            \"id\": { \"type\": \"number\" },\r",
+                  "            \"title\": { \"type\": \"string\" },\r",
+                  "            \"price\": { \"type\": \"number\" },\r",
+                  "            \"description\": { \"type\": \"string\" },\r",
+                  "            \"category\": {\r",
+                  "                \"type\": \"object\",\r",
+                  "                \"required\": [\"id\", \"name\"],\r",
+                  "                \"properties\": {\r",
+                  "                    \"id\": { \"type\": \"number\" },\r",
+                  "                    \"name\": { \"type\": \"string\" }\r",
+                  "                }\r",
+                  "            },\r",
+                  "            \"images\": { \r",
+                  "                \"type\": \"array\",\r",
+                  "                \"items\": { \"type\": \"string\" }\r",
+                  "            }\r",
+                  "        }\r",
+                  "    }\r",
+                  "};\r",
+                  "\r",
+                  "pm.test(\"Validate JSON Schema for Product Array\", () => {\r",
+                  "    pm.response.to.have.jsonSchema(arrayProductSchema);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
           "request": {
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseURL}}api/v1/products/?title=Classic",
+              "raw": "{{baseURL}}api/v1/products/?title={{title}}",
               "host": [
                 "{{baseURL}}api"
               ],
@@ -253,7 +311,7 @@
               "query": [
                 {
                   "key": "title",
-                  "value": "Classic"
+                  "value": "{{title}}"
                 }
               ]
             }
@@ -262,11 +320,55 @@
         },
         {
           "name": "Get Filter by Price",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const response = pm.response.json();\r",
+                  "const expectedPrice = pm.collectionVariables.get(\"price\");\r",
+                  "\r",
+                  "pm.test(\"Status code is 200\",  () => {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "pm.test(\"Validate all products contain the expected price\", () => {\r",
+                  "    response.forEach((product) => {\r",
+                  "        // For numbers use equal\r",
+                  "        pm.expect(Number(product.price)).to.equal(Number(expectedPrice));\r",
+                  "    });\r",
+                  "});\r",
+                  "pm.test(\"Response is a non-empty array\", () => {\r",
+                  "    pm.expect(response).to.be.an('array').and.not.empty;\r",
+                  "});\r",
+                  "\r",
+                  "const arrayProductSchema = {\r",
+                  "    \"type\": \"array\",\r",
+                  "    \"items\": {\r",
+                  "        \"type\": \"object\",\r",
+                  "        \"required\": [\"id\", \"title\", \"price\", \"category\"],\r",
+                  "        \"properties\": {\r",
+                  "            \"id\": { \"type\": \"number\" },\r",
+                  "            \"title\": { \"type\": \"string\" },\r",
+                  "            \"price\": { \"type\": \"number\" },\r",
+                  "            \"category\": { \"type\": \"object\" }\r",
+                  "        }\r",
+                  "    }\r",
+                  "};\r",
+                  "\r",
+                  "pm.test (\"Validate response body against schema\", () => {\r",
+                  "    pm.expect(response).to.have.jsonSchema(arrayProductSchema); });"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
           "request": {
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseURL}}api/v1/products/?price=15",
+              "raw": "{{baseURL}}api/v1/products/?price={{price}}",
               "host": [
                 "{{baseURL}}api"
               ],
@@ -278,7 +380,7 @@
               "query": [
                 {
                   "key": "price",
-                  "value": "15"
+                  "value": "{{price}}"
                 }
               ]
             }
@@ -287,11 +389,76 @@
         },
         {
           "name": "Get Filter by Category ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const response = pm.response.json();\r",
+                  "const expectedCategoryId = pm.collectionVariables.get(\"categoryID\");\r",
+                  "\r",
+                  "pm.test(\"Status code is 200\",  () => {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "pm.test(\"Validate all products contain the categoryID\", () => {\r",
+                  "    response.forEach((product) => {\r",
+                  "        // For numbers use equal\r",
+                  "        pm.expect(Number(product.category.id)).to.equal(Number(expectedCategoryId));\r",
+                  "    });\r",
+                  "});\r",
+                  "pm.test(\"Response is a non-empty array\", () => {\r",
+                  "    pm.expect(response).to.be.an('array').and.not.empty;\r",
+                  "});\r",
+                  "\r",
+                  "const productArraySchema = {\r",
+                  "    \"type\": \"array\",\r",
+                  "    \"items\": {\r",
+                  "        \"type\": \"object\",\r",
+                  "        \"required\": [\"id\", \"title\", \"price\", \"category\", \"images\", \"slug\"],\r",
+                  "        \"properties\": {\r",
+                  "            \"id\": { \"type\": \"number\" },\r",
+                  "            \"title\": { \"type\": \"string\" },\r",
+                  "            \"slug\": { \"type\": \"string\" },\r",
+                  "            \"price\": { \"type\": \"number\" },\r",
+                  "            \"description\": { \"type\": \"string\" },\r",
+                  "            \"category\": {\r",
+                  "                \"type\": \"object\",\r",
+                  "                \"required\": [\"id\", \"name\", \"slug\", \"image\"],\r",
+                  "                \"properties\": {\r",
+                  "                    \"id\": { \"type\": \"number\" },\r",
+                  "                    \"name\": { \"type\": \"string\" },\r",
+                  "                    \"slug\": { \"type\": \"string\" },\r",
+                  "                    \"image\": { \"type\": \"string\" }\r",
+                  "                }\r",
+                  "            },\r",
+                  "            \"images\": { \r",
+                  "                \"type\": \"array\",\r",
+                  "                \"items\": { \"type\": \"string\" }\r",
+                  "            },\r",
+                  "            \"creationAt\": { \"type\": \"string\" },\r",
+                  "            \"updatedAt\": { \"type\": \"string\" }\r",
+                  "        }\r",
+                  "    }\r",
+                  "};\r",
+                  "\r",
+                  "pm.test(\"Schema Validation\", () => {\r",
+                  "    pm.response.to.have.jsonSchema(productArraySchema);\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
           "request": {
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseURL}}api/v1/products/?categoryId=1",
+              "raw": "{{baseURL}}api/v1/products/?categoryId={{categoryID}}",
               "host": [
                 "{{baseURL}}api"
               ],
@@ -303,7 +470,7 @@
               "query": [
                 {
                   "key": "categoryId",
-                  "value": "1"
+                  "value": "{{categoryID}}"
                 }
               ]
             }
@@ -312,11 +479,69 @@
         },
         {
           "name": "Get Filter by Category Slug",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const response = pm.response.json();\r",
+                  "const expectedCategorySlug = pm.collectionVariables.get(\"categorySlug\");\r",
+                  "\r",
+                  "pm.test(\"Status code is 200\",  () => {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "pm.test(\"Validate all products contain the categorySlug\", () => {\r",
+                  "    response.forEach((product) => {\r",
+                  "        // For numbers use equal\r",
+                  "        pm.expect(product.category.slug).equals(expectedCategorySlug);\r",
+                  "    });\r",
+                  "});\r",
+                  "pm.test(\"Response is a non-empty array\", () => {\r",
+                  "    pm.expect(response).to.be.an('array').and.not.empty;\r",
+                  "});\r",
+                  "\r",
+                  "const listSchema = {\r",
+                  "    \"type\": \"array\",\r",
+                  "    \"items\": {\r",
+                  "        \"type\": \"object\",\r",
+                  "        \"required\": [\"id\", \"title\", \"price\", \"category\", \"images\"],\r",
+                  "        \"properties\": {\r",
+                  "            \"id\": { \"type\": \"number\" },\r",
+                  "            \"title\": { \"type\": \"string\" },\r",
+                  "            \"price\": { \"type\": \"number\" },\r",
+                  "            \"slug\": { \"type\": \"string\" },\r",
+                  "            \"category\": {\r",
+                  "                \"type\": \"object\",\r",
+                  "                \"required\": [\"id\", \"name\", \"image\"],\r",
+                  "                \"properties\": {\r",
+                  "                    \"id\": { \"type\": \"number\" },\r",
+                  "                    \"name\": { \"type\": \"string\" },\r",
+                  "                    \"image\": { \"type\": \"string\" }\r",
+                  "                }\r",
+                  "            },\r",
+                  "            \"images\": { \r",
+                  "                \"type\": \"array\",\r",
+                  "                \"items\": { \"type\": \"string\" }\r",
+                  "            }\r",
+                  "        }\r",
+                  "    }\r",
+                  "};\r",
+                  "\r",
+                  "pm.test(\"Schema Validation\", () => {\r",
+                  "    pm.response.to.have.jsonSchema(listSchema);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
           "request": {
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseURL}}api/v1/products/?categorySlug=clothes",
+              "raw": "{{baseURL}}api/v1/products/?categorySlug={{categorySlug}}",
               "host": [
                 "{{baseURL}}api"
               ],
@@ -328,7 +553,7 @@
               "query": [
                 {
                   "key": "categorySlug",
-                  "value": "clothes"
+                  "value": "{{categorySlug}}"
                 }
               ]
             }
@@ -337,12 +562,68 @@
         },
         {
           "name": "Add Product",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const response = pm.response.json();\r",
+                  "const titleBody = pm.collectionVariables.get(\"titleBody\");\r",
+                  "pm.collectionVariables.set(\"createdProductID\", response.id);\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Status code is 201\",  () => {\r",
+                  "    pm.response.to.have.status(201);\r",
+                  "});\r",
+                  "pm.test(\"Validate product  is correct\", () => {\r",
+                  "    pm.expect(response.title).to.eql(titleBody);\r",
+                  "});\r",
+                  "pm.test(\"Response is a non-empty object\", () => {\r",
+                  "    pm.expect(response).to.be.an('object').and.not.empty;\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "// 1. ŞEMA TANIMI (Tek bir obje için)\r",
+                  "const singleProductSchema = {\r",
+                  "    \"type\": \"object\",\r",
+                  "    \"required\": [\"id\", \"title\", \"price\", \"category\", \"images\"],\r",
+                  "    \"properties\": {\r",
+                  "        \"id\": { \"type\": \"number\" },\r",
+                  "        \"title\": { \"type\": \"string\" },\r",
+                  "        \"price\": { \"type\": \"number\" },\r",
+                  "        \"description\": { \"type\": \"string\" },\r",
+                  "        \"category\": {\r",
+                  "            \"type\": \"object\",\r",
+                  "            \"required\": [\"id\", \"name\"],\r",
+                  "            \"properties\": {\r",
+                  "                \"id\": { \"type\": \"number\" },\r",
+                  "                \"name\": { \"type\": \"string\" }\r",
+                  "            }\r",
+                  "        },\r",
+                  "        \"images\": { \r",
+                  "            \"type\": \"array\",\r",
+                  "            \"items\": { \"type\": \"string\" }\r",
+                  "        }\r",
+                  "    }\r",
+                  "};\r",
+                  "\r",
+                  "pm.test(\"Schema Validation\", () => {\r",
+                  "    pm.response.to.have.jsonSchema(singleProductSchema);\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
           "request": {
             "method": "POST",
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n  \"title\": \"k Product\",\r\n  \"price\": 10,\r\n  \"description\": \"A description\",\r\n  \"categoryId\": 1,\r\n  \"images\": [\"https://placehold.co/600x400\"]\r\n}",
+              "raw": "{\r\n  \"title\": \"{{titleBody}}\",\r\n  \"price\": {{priceBody}}, \r\n  \"description\": \"{{descriptionBody}}\",\r\n  \"categoryId\": {{categoryIdBody}}, \r\n  \"images\": [\"{{imageBody}}\"] \r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -364,13 +645,39 @@
           "response": []
         },
         {
-          "name": "Update Product",
+          "name": "Update Product [BUG] 500 Error",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const response = pm.response.json();\r",
+                  "const expectedTitle = pm.collectionVariables.get(\"titleBody\");\r",
+                  "\r",
+                  "pm.test(\"Status code is 200\", () => {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Validate product title is updated\", () => {\r",
+                  "    pm.expect(response.title).to.equal(expectedTitle);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response is a valid object\", () => {\r",
+                  "    pm.expect(response).to.be.an('object').and.not.empty;\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
           "request": {
             "method": "PUT",
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n  \"title\": \"Product\",\r\n  \"price\": 100\r\n}",
+              "raw": "{\r\n  \"title\": \"{{updateTitleBody}}\",\r\n  \"price\": {{updatePriceBody}}\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -392,7 +699,34 @@
           "response": []
         },
         {
-          "name": "Update Product Copy",
+          "name": "Delete Product",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const response = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Status code is 200\",  () => {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "pm.test(\"Response is empty\", () => {\r",
+                  "    pm.expect(response).to.be.true;\r",
+                  "});\r",
+                  "const simpleBooleanSchema = {\r",
+                  "    \"type\": \"boolean\"\r",
+                  "};\r",
+                  "\r",
+                  "pm.test(\"Response is a boolean (true/false)\", () => {\r",
+                  "    pm.response.to.have.jsonSchema(simpleBooleanSchema);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
           "request": {
             "method": "DELETE",
             "header": [],
@@ -468,6 +802,34 @@
     },
     {
       "key": "categorySlug",
+      "value": ""
+    },
+    {
+      "key": "titleBody",
+      "value": ""
+    },
+    {
+      "key": "priceBody",
+      "value": ""
+    },
+    {
+      "key": "descriptionBody",
+      "value": ""
+    },
+    {
+      "key": "imageBody",
+      "value": ""
+    },
+    {
+      "key": "updatePriceBody",
+      "value": ""
+    },
+    {
+      "key": "updateTitleBody",
+      "value": ""
+    },
+    {
+      "key": "categoryIdBody",
       "value": ""
     }
   ]
