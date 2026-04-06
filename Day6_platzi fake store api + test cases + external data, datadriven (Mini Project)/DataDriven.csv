@@ -1,4 +1,4 @@
-titleBody,priceBody,descriptionBody,categoryIdBody,imageBody
-Professional Gaming Headset,85,High-quality sound with noise-canceling microphone.,1,https://i.imgur.com/QkIa5tT.jpeg
-Mechanical RGB Keyboard,120,Tactile switches with customizable backlighting.,2,https://i.imgur.com/39986ix.jpeg
-Wireless Ergonomic Mouse,45,High precision sensor with long battery life.,3,https://i.imgur.com/59986ix.jpeg
+titleBody,priceBody,descriptionBody,categoryIdBody,imageBody,baseURL
+Professional Gaming Headset,85,High-quality sound with noise-canceling microphone.,1,https://i.imgur.com/QkIa5tT.jpeg,https://api.escuelajs.co/
+Mechanical RGB Keyboard,120,Tactile switches with customizable backlighting.,2,https://i.imgur.com/39986ix.jpeg,https://api.escuelajs.co/
+Wireless Ergonomic Mouse,45,High precision sensor with long battery life.,3,https://i.imgur.com/59986ix.jpeg,https://api.escuelajs.co/

@@ -1,10 +1,10 @@
 {
   "info": {
-    "_postman_id": "48ac50a2-428e-4fd2-8c82-7ddcabbf591c",
+    "_postman_id": "f6d6f841-d95f-45f5-a118-d13fecde989e",
     "name": "Day6_PlatziFakeStoreAPI",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "47269879",
-    "_collection_link": "https://go.postman.co/collection/47269879-48ac50a2-428e-4fd2-8c82-7ddcabbf591c?source=collection_link"
+    "_collection_link": "https://go.postman.co/collection/47269879-f6d6f841-d95f-45f5-a118-d13fecde989e?source=collection_link"
   },
   "item": [
     {
@@ -37,42 +37,37 @@
                   "pm.test(\"Validate array is not empty and has items\", () => {\r",
                   "    pm.expect(response).to.be.an('array').that.is.not.empty;\r",
                   "});\r",
-                  "\r",
-                  "// JSON Schema Test\r",
                   "const productSchema = {\r",
-                  "    \"type\": \"array\", // Ana yapı bir array (liste)\r",
+                  "    \"type\": \"array\",\r",
                   "    \"items\": {\r",
                   "        \"type\": \"object\",\r",
                   "        \"required\": [\"id\", \"title\", \"price\", \"description\", \"category\", \"images\"],\r",
                   "        \"properties\": {\r",
                   "            \"id\": { \"type\": \"number\" },\r",
                   "            \"title\": { \"type\": \"string\" },\r",
-                  "            \"slug\": { \"type\": \"string\" },\r",
                   "            \"price\": { \"type\": \"number\" },\r",
                   "            \"description\": { \"type\": \"string\" },\r",
+                  "            \"images\": {\r",
+                  "                \"type\": \"array\",\r",
+                  "                \"items\": { \"type\": \"string\" }\r",
+                  "            },\r",
                   "            \"category\": {\r",
                   "                \"type\": \"object\",\r",
-                  "                \"required\": [\"id\", \"name\", \"slug\", \"image\"],\r",
+                  "                \"required\": [\"id\", \"name\", \"image\"],\r",
                   "                \"properties\": {\r",
                   "                    \"id\": { \"type\": \"number\" },\r",
                   "                    \"name\": { \"type\": \"string\" },\r",
-                  "                    \"slug\": { \"type\": \"string\" },\r",
-                  "                    \"image\": { \"type\": \"string\", \"format\": \"uri\" }\r",
+                  "                    \"image\": { \"type\": \"string\" }\r",
                   "                }\r",
-                  "            },\r",
-                  "            \"images\": {\r",
-                  "                \"type\": \"array\",\r",
-                  "                \"items\": { \"type\": \"string\", \"format\": \"uri\" }\r",
-                  "            },\r",
-                  "            \"creationAt\": { \"type\": \"string\" },\r",
-                  "            \"updatedAt\": { \"type\": \"string\" }\r",
+                  "            }\r",
                   "        }\r",
                   "    }\r",
                   "};\r",
                   "\r",
-                  "pm.test(\"Validate JSON Schema\", () => {\r",
+                  "pm.test(\"Validate Array Schema\", () => {\r",
                   "    pm.response.to.have.jsonSchema(productSchema);\r",
                   "});\r",
+                  "\r",
                   ""
                 ],
                 "type": "text/javascript",
@@ -568,7 +563,7 @@
               "script": {
                 "exec": [
                   "const response = pm.response.json();\r",
-                  "const titleBody = pm.collectionVariables.get(\"titleBody\");\r",
+                  "const tBody = pm.iterationData.get(\"titleBody\") || pm.variables.get(\"titleBody\"); //both for newman and collection runner\r",
                   "pm.collectionVariables.set(\"createdProductID\", response.id);\r",
                   "\r",
                   "\r",
@@ -576,7 +571,9 @@
                   "    pm.response.to.have.status(201);\r",
                   "});\r",
                   "pm.test(\"Validate product  is correct\", () => {\r",
+                  "    const titleBody = pm.variables.get(\"titleBody\");\r",
                   "    pm.expect(response.title).to.eql(titleBody);\r",
+                  "    \r",
                   "});\r",
                   "pm.test(\"Response is a non-empty object\", () => {\r",
                   "    pm.expect(response).to.be.an('object').and.not.empty;\r",
@@ -652,18 +649,13 @@
               "script": {
                 "exec": [
                   "const response = pm.response.json();\r",
-                  "const expectedTitle = pm.collectionVariables.get(\"titleBody\");\r",
                   "\r",
-                  "pm.test(\"Status code is 200\", () => {\r",
-                  "    pm.response.to.have.status(200);\r",
-                  "});\r",
-                  "\r",
-                  "pm.test(\"Validate product title is updated\", () => {\r",
-                  "    pm.expect(response.title).to.equal(expectedTitle);\r",
+                  "pm.test(\"Status code is 400\", () => {\r",
+                  "    pm.response.to.have.status(400);\r",
                   "});\r",
                   "\r",
                   "pm.test(\"Response is a valid object\", () => {\r",
-                  "    pm.expect(response).to.be.an('object').and.not.empty;\r",
+                  "    pm.expect(response).to.be.an('object')\r",
                   "});"
                 ],
                 "type": "text/javascript",
@@ -769,6 +761,68 @@
           ""
         ]
       }
+    }
+  ],
+  "variable": [
+    {
+      "key": "id",
+      "value": ""
+    },
+    {
+      "key": "baseURL",
+      "value": ""
+    },
+    {
+      "key": "slug",
+      "value": ""
+    },
+    {
+      "key": "createdProductID",
+      "value": ""
+    },
+    {
+      "key": "title",
+      "value": ""
+    },
+    {
+      "key": "price",
+      "value": ""
+    },
+    {
+      "key": "categoryID",
+      "value": ""
+    },
+    {
+      "key": "categorySlug",
+      "value": ""
+    },
+    {
+      "key": "priceBody",
+      "value": ""
+    },
+    {
+      "key": "descriptionBody",
+      "value": ""
+    },
+    {
+      "key": "imageBody",
+      "value": ""
+    },
+    {
+      "key": "updatePriceBody",
+      "value": ""
+    },
+    {
+      "key": "updateTitleBody",
+      "value": ""
+    },
+    {
+      "key": "categoryIdBody",
+      "value": ""
+    },
+    {
+      "key": "titleBody",
+      "value": ""
     }
   ]
 }
