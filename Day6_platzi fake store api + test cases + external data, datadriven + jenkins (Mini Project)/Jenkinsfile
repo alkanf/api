@@ -1,0 +1,38 @@
+pipeline {
+    agent any
+
+    environment {
+        // Defining the path as a variable to handle the spaces in folder names safely
+        PROJE_PATH = 'C:/Users/alkan/Desktop/Proje 2/Day6_platzi fake store api + test cases + external data, datadriven (Mini Project)'
+    }
+
+    stages {
+        stage('Run with JSON Data') {
+            steps {
+                echo 'Starting API tests using JSON data set...'
+                bat """
+                    newman run "${PROJE_PATH}/Day6_PlatziFakeStoreAPI.postman_collection.json" ^
+                    -d "${PROJE_PATH}/Data.json" ^
+                    -r cli,html --reporter-html-export "${PROJE_PATH}/CI_CL_reports_json.html"
+                """
+            }
+        }
+
+        stage('Run with CSV Data (Data Driven)') {
+            steps {
+                echo 'Starting API tests using CSV data set...'
+                bat """
+                    newman run "${PROJE_PATH}/Day6_PlatziFakeStoreAPI.postman_collection.json" ^
+                    -d "${PROJE_PATH}/DataDriven.csv" ^
+                    -r cli,html --reporter-html-export "${PROJE_PATH}/CI_CL_reports_csv.html"
+                """
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Test execution finished. Reports have been generated in the project folder.'
+        }
+    }
+}
