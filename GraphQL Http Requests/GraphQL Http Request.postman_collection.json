@@ -1,0 +1,231 @@
+{
+  "info": {
+    "_postman_id": "85eabbf9-40b5-479c-97d6-0164e1245e9a",
+    "name": "GraphQL Http Request",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "47269879",
+    "_collection_link": "https://go.postman.co/collection/47269879-85eabbf9-40b5-479c-97d6-0164e1245e9a?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Queries",
+      "item": [
+        {
+          "name": "Fetch Users and Their Todos",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query {\r\n users {\r\n name\r\n todos {\r\n title\r\n }\r\n }\r\n}\r\n",
+                "variables": ""
+              }
+            },
+            "url": {
+              "raw": "https://hasura.io/learn/graphql",
+              "protocol": "https",
+              "host": [
+                "hasura",
+                "io"
+              ],
+              "path": [
+                "learn",
+                "graphql"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Query with an Argument: Fetch Limited Todos",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query {\r\n todos(limit: 2) {\r\n id\r\n title\r\n }\r\n}",
+                "variables": ""
+              }
+            },
+            "url": {
+              "raw": "https://hasura.io/learn/graphql",
+              "protocol": "https",
+              "host": [
+                "hasura",
+                "io"
+              ],
+              "path": [
+                "learn",
+                "graphql"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Query with Multiple Arguments",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query {\r\n todos(limit: 2) {\r\n id\r\n title\r\n }\r\n}",
+                "variables": ""
+              }
+            },
+            "url": {
+              "raw": "https://hasura.io/learn/graphql",
+              "protocol": "https",
+              "host": [
+                "hasura",
+                "io"
+              ],
+              "path": [
+                "learn",
+                "graphql"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Query with Variables",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query ($limit: Int!) {\r\n todos(limit: $limit) {\r\n id\r\n title\r\n }\r\n}\r\n",
+                "variables": "{\r\n \"limit\": 2\r\n}\r\n"
+              }
+            },
+            "url": {
+              "raw": "https://hasura.io/learn/graphql",
+              "protocol": "https",
+              "host": [
+                "hasura",
+                "io"
+              ],
+              "path": [
+                "learn",
+                "graphql"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Query with Filter (Where Clause)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query {\r\ntodos(where: {is_public: {_eq: true}}) {\r\n title\r\n is_public\r\n is_completed\r\n }\r\n}",
+                "variables": ""
+              }
+            },
+            "url": {
+              "raw": "https://hasura.io/learn/graphql",
+              "protocol": "https",
+              "host": [
+                "hasura",
+                "io"
+              ],
+              "path": [
+                "learn",
+                "graphql"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "token",
+      "value": ""
+    }
+  ]
+}
